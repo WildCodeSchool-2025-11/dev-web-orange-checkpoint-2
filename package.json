@@ -43,5 +43,8 @@
     "@commitlint/config-conventional": "^19.8.0",
     "concurrently": "^9.1.2",
     "validate-branch-name": "^1.3.2"
+  },
+  "dependencies": {
+    "lint": "^0.8.19"
   }
 }
