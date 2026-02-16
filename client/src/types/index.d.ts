@@ -9,3 +9,10 @@ type Cupcake = {
 };
 
 type CupcakeArray = Cupcake[];
+
+interface IAccessories {
+  id: number;
+  name: string;
+  slug: string;
+}
+type AccessoryArray = IAccessories[];
