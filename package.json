@@ -10,11 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/{{ org }}/js_checkpoint2.git"
   },
-  "workspaces": [
-    "client",
-    "server",
-    "algo"
-  ],
+  "workspaces": ["client", "server", "algo"],
   "scripts": {
     "algo:test:1": "npm run test:1 --workspace=algo",
     "algo:test:2": "npm run test:2 --workspace=algo",
