@@ -4,16 +4,12 @@ import Cupcake from "../components/Cupcake";
 type AccessoryArray = { id: number; name: string; slug: string }[];
 
 function CupcakeList() {
-  // Step 1: get all cupcakes
   const [cupcakes, setCupcakes] = useState<CupcakeArray>([]);
 
-  // Step 3: get all accessories
   const [accessories, setAccessories] = useState<AccessoryArray>([]);
 
-  // Step 5: create filter state
   const [selectedAccessory, setSelectedAccessory] = useState<string>("");
 
-  // Step 1: Fetch cupcakes
   useEffect(() => {
     fetch("http://localhost:3310/api/cupcakes")
       .then((response) => response.json())
@@ -23,7 +19,6 @@ function CupcakeList() {
       });
   }, []);
 
-  // Step 3: Fetch accessories
   useEffect(() => {
     fetch("http://localhost:3310/api/accessories")
       .then((response) => response.json())
@@ -33,7 +28,6 @@ function CupcakeList() {
       });
   }, []);
 
-  // Step 5: Filter cupcakes
   const filteredCupcakes = selectedAccessory
     ? cupcakes.filter((cupcake) => cupcake.accessory_id === selectedAccessory)
     : cupcakes;
