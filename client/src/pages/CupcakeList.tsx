@@ -72,7 +72,26 @@ function CupcakeList() {
 
 
   // Step 3: get all accessories
-
+  type AccessoryArray = { id: number; name: string; slug: string }[];
+  const [accessories, setAccessories] = useState<AccessoryArray>([]);
+  useEffect(() => {
+    const fetchAccessories = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3310/api/accessories"
+        );
+        if (!response.ok) {
+          throw new Error(`Erreur réseau : ${response.status}`);
+        }
+        const data: AccessoryArray = await response.json();
+        setAccessories(data);
+        console.info("Accessoires récupérés :", data);
+      } catch (error) {
+        console.error("Impossible de charger les accessoires :", error);
+      }
+    };
+    fetchAccessories();
+  }, []);
   // Step 5: create filter state
 
   return (

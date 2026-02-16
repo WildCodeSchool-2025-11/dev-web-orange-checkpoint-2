@@ -4,6 +4,17 @@ interface CupcakeProps {
   data: Cupcake;
 }
 
+export interface Cupcake {
+  id: number;
+  accessory_id: number;   
+  accessory: string;
+  color1: string;
+  color2: string;
+  color3: string;
+  name: string;
+}
+
+
 function Cupcake({ data }: CupcakeProps) {
   return (
     <div className="cupcake-container">
