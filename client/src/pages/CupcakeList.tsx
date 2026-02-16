@@ -103,24 +103,27 @@ function CupcakeList() {
           Filter by{" "}
           <select id="cupcake-select">
             <option value="">---</option>
-            {/* Step 4: add an option for each accessory */}
-          </select>
+            {accessories.map((acc) => (
+              <option key={acc.id} value={acc.id}>
+                {acc.name}
+              </option>
+            ))}          </select>
         </label>
       </form>
-<ul className="cupcake-list" id="cupcake-list">
-  {cupcakes.map((cupcake) => (
-    <li key={cupcake.id} className="cupcake-item">
-      {/* Le composant Cupcake attend une prop `data` contenant tout l’objet */}
-      <Cupcake data={cupcake} />
-    </li>
-  ))}
+      <ul className="cupcake-list" id="cupcake-list">
+        {cupcakes.map((cupcake) => (
+          <li key={cupcake.id} className="cupcake-item">
+            {/* Le composant Cupcake attend une prop `data` contenant tout l’objet */}
+            <Cupcake data={cupcake} />
+          </li>
+        ))}
 
-  {/*
+        {/*
   <li className="cupcake-item">
     <Cupcake data={sampleCupcakes[0]} />
   </li>
   */}
-</ul>
+      </ul>
     </>
   );
 }
