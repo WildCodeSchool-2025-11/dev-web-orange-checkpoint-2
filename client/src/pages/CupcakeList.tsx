@@ -1,5 +1,4 @@
 import Cupcake from "../components/Cupcake";
-import { useEffect, useState } from 'react';
 
 /* ************************************************************************* */
 const sampleCupcakes: CupcakeArray = [
@@ -32,33 +31,6 @@ const sampleCupcakes: CupcakeArray = [
   },
 ];
 
-interface Cupcake {
-  id: number;
-  accessory_id: number;
-  accessory: string;
-  color1: string;
-  color2: string;
-  color3: string;
-  name: string;
-}
-const [cupcakes, setCupcakes] = useState<Cupcake[]>([]);
-
-useEffect(() => {
-  const fetchCupcakes = async () => {
-    try {
-      const response = await fetch('http://localhost:3310/api/cupcakes');
-      if (!response.ok) {
-      throw new Error(`Erreur réseau : ${response.status}`);
-    }
-          const data: Cupcake[] = await response.json();
-                setCupcakes(data);
-                console.info('Cupcakes récupérés :', data);
-    } catch (error) {
-      console.error('Impossible de charger les cupcakes :', error);
-    }
-  };
-  fetchCupcakes();
-}, []);
 /* you can use sampleCupcakes if you're stucked on step 1 */
 /* if you're fine with step 1, just ignore this ;) */
 /* ************************************************************************* */
