@@ -4,13 +4,30 @@ function NavBar() {
   return (
     <nav className="navbar">
       <div>
-        <NavLink className="primary-btn btn" to="/">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `primary-btn btn ${isActive ? "active" : ""}`
+          }
+        >
           Home
         </NavLink>
-        <NavLink className="primary-btn btn" to="/cupcakes">
+
+        <NavLink
+          to="/cupcakes"
+          className={({ isActive }) =>
+            `primary-btn btn ${isActive ? "active" : ""}`
+          }
+        >
           🧁 My cupcakes
         </NavLink>
-        <NavLink className="secondary-btn btn" to="/instructions">
+
+        <NavLink
+          to="/instructions"
+          className={({ isActive }) =>
+            `secondary-btn btn ${isActive ? "active" : ""}`
+          }
+        >
           Instructions
         </NavLink>
       </div>

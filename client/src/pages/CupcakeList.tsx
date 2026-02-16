@@ -1,67 +1,81 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import Cupcake from "../components/Cupcake";
 
-/* ************************************************************************* */
-const sampleCupcakes: CupcakeArray = [
-  {
-    id: 10,
-    accessory_id: "4",
-    accessory: "wcs",
-    color1: "blue",
-    color2: "white",
-    color3: "red",
-    name: "France",
-  },
-  {
-    id: 11,
-    accessory_id: "4",
-    accessory: "wcs",
-    color1: "yellow",
-    color2: "red",
-    color3: "black",
-    name: "Germany",
-  },
-  {
-    id: 27,
-    accessory_id: "5",
-    accessory: "christmas-candy",
-    color1: "yellow",
-    color2: "blue",
-    color3: "blue",
-    name: "Sweden",
-  },
-];
-
-/* you can use sampleCupcakes if you're stucked on step 1 */
-/* if you're fine with step 1, just ignore this ;) */
-/* ************************************************************************* */
+type AccessoryArray = { id: number; name: string; slug: string }[];
 
 function CupcakeList() {
-  // Step 1: get all cupcakes
+  const [cupcakes, setCupcakes] = useState<CupcakeArray>([]);
+  const [accessories, setAccessories] = useState<AccessoryArray>([]);
+  const [selectedAccessoryId, setSelectedAccessoryId] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Step 3: get all accessories
+  useEffect(() => {
+    async function load() {
+      try {
+        const [cupRes, accRes] = await Promise.all([
+          fetch("http://localhost:3310/api/cupcakes"),
+          fetch("http://localhost:3310/api/accessories"),
+        ]);
 
-  // Step 5: create filter state
+        const cupData = (await cupRes.json()) as CupcakeArray;
+        const accData = (await accRes.json()) as AccessoryArray;
+
+        setCupcakes(cupData);
+        setAccessories(accData);
+
+        console.info("Cupcakes:", cupData);
+        console.info("Accessories:", accData);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  const filteredCupcakes = useMemo(() => {
+    if (!selectedAccessoryId) return cupcakes;
+    return cupcakes.filter((c) => c.accessory_id === selectedAccessoryId);
+  }, [cupcakes, selectedAccessoryId]);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <>
       <h1>My cupcakes</h1>
+
       <form className="center">
         <label htmlFor="cupcake-select">
-          {/* Step 5: use a controlled component for select */}
           Filter by{" "}
-          <select id="cupcake-select">
+          <select
+            id="cupcake-select"
+            value={selectedAccessoryId}
+            onChange={(e) => setSelectedAccessoryId(e.target.value)}
+          >
             <option value="">---</option>
-            {/* Step 4: add an option for each accessory */}
+
+            {accessories.map((a) => (
+              <option key={a.id} value={String(a.id)}>
+                {a.name}
+              </option>
+            ))}
           </select>
         </label>
       </form>
+
       <ul className="cupcake-list" id="cupcake-list">
-        {/* Step 2: repeat this block for each cupcake */}
-        {/* Step 5: filter cupcakes before repeating */}
-        <li className="cupcake-item">
-          <Cupcake data={sampleCupcakes[0]} />
-        </li>
-        {/* end of block */}
+        {filteredCupcakes.map((cupcake) => (
+          <li className="cupcake-item" key={cupcake.id}>
+            <Link
+              to={`/cupcakes/${cupcake.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Cupcake data={cupcake} />
+            </Link>
+          </li>
+        ))}
       </ul>
     </>
   );
