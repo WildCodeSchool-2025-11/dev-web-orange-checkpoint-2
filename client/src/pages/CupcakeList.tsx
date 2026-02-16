@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Cupcake from "../components/Cupcake";
 
 /* ************************************************************************* */
@@ -96,9 +97,11 @@ function CupcakeList() {
               !selectedAccessory || cupcake.accessory_id === selectedAccessory,
           )
           .map((cupcake) => (
-            <li key={cupcake.id} className="cupcake-item">
-              <Cupcake data={cupcake} />
-            </li>
+            <Link key={cupcake.id} to={`/cupcakes/${cupcake.id}`}>
+              <li className="cupcake-item">
+                <Cupcake data={cupcake} />
+              </li>
+            </Link>
           ))}
 
         {/* end of block */}
