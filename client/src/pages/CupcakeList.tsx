@@ -1,4 +1,5 @@
 import Cupcake from "../components/Cupcake";
+import { useEffect, useState } from 'react';
 
 /* ************************************************************************* */
 const sampleCupcakes: CupcakeArray = [
@@ -37,6 +38,38 @@ const sampleCupcakes: CupcakeArray = [
 
 function CupcakeList() {
   // Step 1: get all cupcakes
+  interface CupcakeData {
+    id: number;
+    accessory_id: number;
+    accessory: string;
+    color1: string;
+    color2: string;
+    color3: string;
+    name: string;
+  }
+  const [cupcakes, setCupcakes] = useState<CupcakeData[]>([]);
+  useEffect(() => {
+    const fetchCupcakes = async () => {
+      try {
+        const response = await fetch('http://localhost:3310/api/cupcakes');
+
+        if (!response.ok) {
+          throw new Error(`Erreur réseau : ${response.status}`);
+        }
+
+        const data: CupcakeData[] = await response.json();
+
+        setCupcakes(data);
+
+        console.info('Cupcakes récupérés :', data);
+      } catch (error) {
+        console.error('Impossible de charger les cupcakes :', error);
+      }
+    };
+
+    fetchCupcakes();
+  }, []);
+
 
   // Step 3: get all accessories
 
@@ -55,14 +88,20 @@ function CupcakeList() {
           </select>
         </label>
       </form>
-      <ul className="cupcake-list" id="cupcake-list">
-        {/* Step 2: repeat this block for each cupcake */}
-        {/* Step 5: filter cupcakes before repeating */}
-        <li className="cupcake-item">
-          <Cupcake data={sampleCupcakes[0]} />
-        </li>
-        {/* end of block */}
-      </ul>
+<ul className="cupcake-list" id="cupcake-list">
+  {cupcakes.map((cupcake) => (
+    <li key={cupcake.id} className="cupcake-item">
+      {/* Le composant Cupcake attend une prop `data` contenant tout l’objet */}
+      <Cupcake data={cupcake} />
+    </li>
+  ))}
+
+  {/*
+  <li className="cupcake-item">
+    <Cupcake data={sampleCupcakes[0]} />
+  </li>
+  */}
+</ul>
     </>
   );
 }
